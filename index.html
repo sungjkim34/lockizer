@@ -1,0 +1,19 @@
+<html>
+    <head>
+      <title>Lock/Unlock</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.3/css/bootstrap.min.css">
+    </head>
+    <body>
+      <div style="margin-top:5px">
+        <button type="button" class="btn btn-success" id="lockBtn">Lock/Unlock</button>
+      </div>
+    </body>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        var socket = io();
+        $('#lockBtn').click(() => {
+            socket.emit('lock');
+        });
+    </script>
+  </html>

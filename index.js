@@ -1,76 +1,37 @@
-var Gpio = require('onoff').Gpio;
-var in1 = new Gpio(17, 'out');
-var in2 = new Gpio(18, 'out');
-var in3 = new Gpio(27, 'out');
-var in4 = new Gpio(22, 'out');
+var express = require('express');
+var http = require('http');
+var path = require('path');
+var socketIO = require('socket.io');
 
-testback(5, 128);
-//backward(5, 128);
-//forward(5, 128);
+var app = express();
+var server = http.Server(app);
+var io = socketIO(server);
 
-async function test(delay, steps){
-        for(var i = 0; i < steps; i++) {
-                setStep(1, 0, 0, 0);
-                await sleep(delay);
-                setStep(0, 1, 0, 0);
-                await sleep(delay);
-                setStep(0, 0, 1, 0);
-                await sleep(delay);
-                setStep(0, 0, 0, 1);
-                await sleep(delay);
-        }
-        setStep(0,0,0,0);
-}
+var lock = require('./lock');
 
-async function testback(delay, steps){
-        for(var i = 0; i < steps; i++) {
-                setStep(1, 0, 0, 0);
-                await sleep(delay);
-                setStep(0, 0, 0, 1);
-                await sleep(delay);
-                setStep(0, 0, 1, 0);
-                await sleep(delay);
-                setStep(0, 1, 0, 0);
-                await sleep(delay);
-        }
-        setStep(0,0,0,0);
-}
+app.set('port', 3434);
+app.use('/static', express.static(__dirname + '/static'));
+app.get('/', (request, response) => response.sendFile(path.join(__dirname, 'index.html')));
+server.listen(8282, () => console.log('Starting server on port 8282'));
 
-function sleep(ms) {
-	return new Promise(resolve => setTimeout(resolve, ms));
-}
+io.on('connection', socket => {
+        socket.on('lock', socket => {
+                console.log('lock');
+                lock.backward(5, 128);
+        });
+//   console.log('Number of players: ' +  Object.keys(io.sockets.sockets).length);
+//   io.emit('numberOfPlayersChanged', Object.keys(io.sockets.sockets).length);
 
-async function forward(delay, steps){
-	for(var i = 0; i < steps; i++) {
-		setStep(1, 0, 1, 0);
-		await sleep(delay);
-		setStep(0, 1, 1, 0);
-		await sleep(delay);
-		setStep(0, 1, 0, 1);
-		await sleep(delay);
-		setStep(1, 0, 0, 1);
-		await sleep(delay);
-	}
-	setStep(0,0,0,0);
-}
+//   if(Object.keys(io.sockets.sockets).length === 1) {
+//     socket.emit('hostPlayer');
+//   }
+//   console.log(socket.id);
 
-async function backward(delay, steps){
-        for(var i = 0; i < steps; i++) {
-                setStep(1, 0, 0, 1);
-		await sleep(delay);
-                setStep(0, 1, 0, 1);
-		await sleep(delay);
-                setStep(0, 1, 1, 0);
-		await sleep(delay);
-                setStep(1, 0, 1, 0);
-		await sleep(delay);
-        }
-        setStep(0,0,0,0);
-}
-
-function setStep(w1, w2, w3, w4){
-	in1.writeSync(w1);
-	in2.writeSync(w2);
-	in3.writeSync(w3);
-	in4.writeSync(w4);
-}
+//   socket.on('disconnect', socket => {
+//     console.log('Number of players: ' + Object.keys(io.sockets.sockets).length);
+//     io.emit('numberOfPlayersChanged', Object.keys(io.sockets.sockets).length);
+//     if(Object.keys(io.sockets.sockets).length === 1) {
+//       io.emit('hostPlayer');
+//     }
+//   });
+});
