@@ -4,8 +4,6 @@ var in2 = new Gpio(18, 'out');
 var in3 = new Gpio(27, 'out');
 var in4 = new Gpio(22, 'out');
 
-forward(5, 128);
-
 async function forward(delay, steps){
         for(var i = 0; i < steps; i++) {
                 setStep(1, 0, 0, 0);
