@@ -6,7 +6,7 @@ var in4 = new Gpio(22, 'out');
 
 forward(5, 128);
 
-export async function forward(delay, steps){
+async function forward(delay, steps){
         for(var i = 0; i < steps; i++) {
                 setStep(1, 0, 0, 0);
                 await sleep(delay);
@@ -20,7 +20,7 @@ export async function forward(delay, steps){
         setStep(0,0,0,0);
 }
 
-export async function backward(delay, steps){
+async function backward(delay, steps){
         for(var i = 0; i < steps; i++) {
                 setStep(1, 0, 0, 0);
                 await sleep(delay);
@@ -44,3 +44,8 @@ function setStep(w1, w2, w3, w4){
 	in3.writeSync(w3);
 	in4.writeSync(w4);
 }
+
+module.exports = {
+    forward: forward,
+    backward: backward
+};
