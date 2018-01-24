@@ -5,15 +5,11 @@
     </head>
     <body>
       <div style="margin-top:5px">
-        <button type="button" class="btn btn-success" id="lockBtn">Lock/Unlock</button>
+        <button type="button" class="btn btn-success" id="lockBtn">Lock</button>
+        <button type="button" class="btn btn-danger" id="unlockBtn">Unlock</button>
       </div>
     </body>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script>
-        var socket = io();
-        $('#lockBtn').click(() => {
-            socket.emit('lock');
-        });
-    </script>
+    <script src="/static/index.js"></script>
   </html>

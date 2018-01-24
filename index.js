@@ -8,6 +8,7 @@ var server = http.Server(app);
 var io = socketIO(server);
 
 var lock = require('./lock');
+var isLocked = false;
 
 app.set('port', 3434);
 app.use('/static', express.static(__dirname + '/static'));
@@ -17,15 +18,21 @@ server.listen(8282, () => console.log('Starting server on port 8282'));
 io.on('connection', socket => {
         socket.on('lock', socket => {
                 console.log('lock');
-                lock.backward(5, 128);
+                if(isLocked === false) {
+                        lock.backward(5, 128);
+                }
+                isLocked = true;
+                io.emit('isLocked', isLocked);
         });
-//   console.log('Number of players: ' +  Object.keys(io.sockets.sockets).length);
-//   io.emit('numberOfPlayersChanged', Object.keys(io.sockets.sockets).length);
-
-//   if(Object.keys(io.sockets.sockets).length === 1) {
-//     socket.emit('hostPlayer');
-//   }
-//   console.log(socket.id);
+        socket.on('unlock', socket => {
+                console.log('unlock');
+                if(isLocked === true) {
+                        lock.forward(5, 128);
+                }
+                isLocked = false;
+                io.emit('isLocked', isLocked);
+        });
+        io.emit('isLocked', isLocked);
 
 //   socket.on('disconnect', socket => {
 //     console.log('Number of players: ' + Object.keys(io.sockets.sockets).length);
