@@ -1,19 +1,76 @@
-var gpio = require('onoff').Gpio;
-var led = new gpio(4, 'out');
-var blinkInterval = setInterval(blinkLED, 250);
+var Gpio = require('onoff').Gpio;
+var in1 = new Gpio(17, 'out');
+var in2 = new Gpio(18, 'out');
+var in3 = new Gpio(27, 'out');
+var in4 = new Gpio(22, 'out');
 
-function blinkLED() {
-	if (led.readSync() === 0) {
-		led.writeSync(1);
-	} else {
-		led.writeSync(0);
+testback(5, 128);
+//backward(5, 128);
+//forward(5, 128);
+
+async function test(delay, steps){
+        for(var i = 0; i < steps; i++) {
+                setStep(1, 0, 0, 0);
+                await sleep(delay);
+                setStep(0, 1, 0, 0);
+                await sleep(delay);
+                setStep(0, 0, 1, 0);
+                await sleep(delay);
+                setStep(0, 0, 0, 1);
+                await sleep(delay);
+        }
+        setStep(0,0,0,0);
+}
+
+async function testback(delay, steps){
+        for(var i = 0; i < steps; i++) {
+                setStep(1, 0, 0, 0);
+                await sleep(delay);
+                setStep(0, 0, 0, 1);
+                await sleep(delay);
+                setStep(0, 0, 1, 0);
+                await sleep(delay);
+                setStep(0, 1, 0, 0);
+                await sleep(delay);
+        }
+        setStep(0,0,0,0);
+}
+
+function sleep(ms) {
+	return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function forward(delay, steps){
+	for(var i = 0; i < steps; i++) {
+		setStep(1, 0, 1, 0);
+		await sleep(delay);
+		setStep(0, 1, 1, 0);
+		await sleep(delay);
+		setStep(0, 1, 0, 1);
+		await sleep(delay);
+		setStep(1, 0, 0, 1);
+		await sleep(delay);
 	}
+	setStep(0,0,0,0);
 }
 
-function endBlink() {
-	clearInterval(blinkInterval);
-	led.writeSync(0);
-	led.unexport();
+async function backward(delay, steps){
+        for(var i = 0; i < steps; i++) {
+                setStep(1, 0, 0, 1);
+		await sleep(delay);
+                setStep(0, 1, 0, 1);
+		await sleep(delay);
+                setStep(0, 1, 1, 0);
+		await sleep(delay);
+                setStep(1, 0, 1, 0);
+		await sleep(delay);
+        }
+        setStep(0,0,0,0);
 }
 
-setTimeout(endBlink, 5000);
+function setStep(w1, w2, w3, w4){
+	in1.writeSync(w1);
+	in2.writeSync(w2);
+	in3.writeSync(w3);
+	in4.writeSync(w4);
+}
