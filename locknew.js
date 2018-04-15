@@ -33,10 +33,6 @@ var EN = new Gpio(6, 'out');
 //     setStep(0, 0, 0, 0);
 // }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
 // function setStep(w1, w2, w3, w4) {
 //     in1.writeSync(w1);
 //     in2.writeSync(w2);
@@ -61,6 +57,10 @@ function StepForwardDefault() {
     }
     // Serial.println("Enter new option");
     // Serial.println();
+}
+
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 function resetEDPins() {
