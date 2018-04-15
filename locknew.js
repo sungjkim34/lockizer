@@ -41,22 +41,14 @@ var EN = new Gpio(6, 'out');
 // }
 
 function StepForwardDefault() {
-    //   Serial.println("Moving forward at default step mode.");
     dir.writeSync(0);
-    // digitalWrite(dir, LOW); //Pull direction pin low to move "forward"
     for (var x = 1; x < 1000; x++)  //Loop the forward stepping enough times for motion to be visible
     {
         stp.writeSync(1);
-        // digitalWrite(stp, HIGH); //Trigger one step forward
-        // delay(1);
-        await sleep(5);
+        await new Promise(resolve => setTimeout(resolve, 5));
         stp.writeSync(0);
-        // digitalWrite(stp, LOW); //Pull step pin low so it can be triggered again
-        await sleep(5);
-        // delay(1);
+        await new Promise(resolve => setTimeout(resolve, 5));
     }
-    // Serial.println("Enter new option");
-    // Serial.println();
 }
 
 function sleep(ms) {
