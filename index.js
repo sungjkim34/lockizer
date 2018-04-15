@@ -7,7 +7,8 @@ var app = express();
 var server = http.Server(app);
 var io = socketIO(server);
 
-var lock = require('./lock');
+// var lock = require('./lock');
+var lock = require('./locknew');
 var isLocked = false;
 
 app.set('port', 3434);
@@ -18,19 +19,23 @@ server.listen(8282, () => console.log('Starting server on port 8282'));
 io.on('connection', socket => {
         socket.on('lock', socket => {
                 console.log('lock');
-                if(isLocked === false) {
-                        lock.backward(5, 128);
-                }
-                isLocked = true;
-                io.emit('isLocked', isLocked);
+                lock.resetEDPins();
+                lock.StepForwardDefault();
+                // if(isLocked === false) {
+                //         lock.backward(5, 128);
+                // }
+                // isLocked = true;
+                // io.emit('isLocked', isLocked);
         });
         socket.on('unlock', socket => {
                 console.log('unlock');
-                if(isLocked === true) {
-                        lock.forward(5, 128);
-                }
-                isLocked = false;
-                io.emit('isLocked', isLocked);
+                lock.resetEDPins();
+                lock.StepForwardDefault();
+                // if(isLocked === true) {
+                //         lock.forward(5, 128);
+                // }
+                // isLocked = false;
+                // io.emit('isLocked', isLocked);
         });
         io.emit('isLocked', isLocked);
 
