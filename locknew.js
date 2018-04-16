@@ -42,6 +42,7 @@ var EN = new Gpio(6, 'out');
 
 async function StepForwardDefault() {
     //   Serial.println("Moving forward at default step mode.");
+    EN.writeSync(0);
     dir.writeSync(0);
     // digitalWrite(dir, LOW); //Pull direction pin low to move "forward"
     for (var x = 1; x < 1000; x++)  //Loop the forward stepping enough times for motion to be visible
