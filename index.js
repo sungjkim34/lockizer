@@ -20,7 +20,7 @@ io.on('connection', socket => {
         socket.on('lock', socket => {
                 console.log('lock');
                 lock.resetEDPins();
-                lock.smallForward();
+                lock.smallBackward();
                 // if(isLocked === false) {
                 //         lock.backward(5, 128);
                 // }
@@ -30,7 +30,7 @@ io.on('connection', socket => {
         socket.on('unlock', socket => {
                 console.log('unlock');
                 lock.resetEDPins();
-                lock.backward();
+                lock.smallForward();
                 // if(isLocked === true) {
                 //         lock.forward(5, 128);
                 // }

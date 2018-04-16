@@ -10,8 +10,25 @@ async function smallForward() {
     dir.writeSync(0);
     MS1.writeSync(1);
     MS2.writeSync(1);
-    for (x = 1; x < 1000; x++)  //Loop the forward stepping enough times for motion to be visible
+    for (var x = 1; x < 1000; x++)  //Loop the forward stepping enough times for motion to be visible
     {
+        console.log(x);
+        stp.writeSync(1);
+        await sleep(1);
+        stp.writeSync(0);
+        await sleep(1);
+    }
+    resetEDPins();
+}
+
+async function smallBackward() {
+    EN.writeSync(0);
+    dir.writeSync(1);
+    MS1.writeSync(1);
+    MS2.writeSync(1);
+    for (var x = 1; x < 1000; x++)  //Loop the forward stepping enough times for motion to be visible
+    {
+        console.log(x);
         stp.writeSync(1);
         await sleep(1);
         stp.writeSync(0);
@@ -65,5 +82,6 @@ module.exports = {
     resetEDPins: resetEDPins,
     forward: forward,
     backward: backward,
-    smallForward: smallForward
+    smallForward: smallForward,
+    smallBackward: smallBackward
 };
