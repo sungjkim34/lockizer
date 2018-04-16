@@ -24,8 +24,8 @@ io.on('connection', socket => {
                 // if(isLocked === false) {
                 //         lock.backward(5, 128);
                 // }
-                // isLocked = true;
-                // io.emit('isLocked', isLocked);
+                isLocked = true;
+                io.emit('isLocked', isLocked);
         });
         socket.on('unlock', socket => {
                 console.log('unlock');
@@ -34,8 +34,8 @@ io.on('connection', socket => {
                 // if(isLocked === true) {
                 //         lock.forward(5, 128);
                 // }
-                // isLocked = false;
-                // io.emit('isLocked', isLocked);
+                isLocked = false;
+                io.emit('isLocked', isLocked);
         });
         io.emit('isLocked', isLocked);
 
