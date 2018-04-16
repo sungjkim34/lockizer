@@ -14,9 +14,9 @@ async function smallForward() {
     {
         console.log(x);
         stp.writeSync(1);
-        await sleep(1);
+        await sleep(0.5);
         stp.writeSync(0);
-        await sleep(1);
+        await sleep(0.5);
     }
     resetEDPins();
 }
@@ -30,9 +30,9 @@ async function smallBackward() {
     {
         console.log(x);
         stp.writeSync(1);
-        await sleep(1);
+        await sleep(0.5);
         stp.writeSync(0);
-        await sleep(1);
+        await sleep(0.5);
     }
     resetEDPins();
 }
@@ -44,9 +44,9 @@ async function forward() {
     {
         console.log(x);
         stp.writeSync(1);
-        await sleep(5);
+        await sleep(1);
         stp.writeSync(0);
-        await sleep(5);
+        await sleep(1);
     }
     resetEDPins();
 }
@@ -58,9 +58,9 @@ async function backward() {
     {
         console.log(x);
         stp.writeSync(1);
-        await sleep(5);
+        await sleep(1);
         stp.writeSync(0);
-        await sleep(5);
+        await sleep(1);
     }
     resetEDPins();
 }
