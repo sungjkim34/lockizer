@@ -5,6 +5,21 @@ var MS1 = new Gpio(4, 'out');
 var MS2 = new Gpio(5, 'out');
 var EN = new Gpio(6, 'out');
 
+async function smallForward() {
+    EN.writeSync(0);
+    dir.writeSync(0);
+    MS1.writeSync(1);
+    MS2.writeSync(1);
+    for (x = 1; x < 1000; x++)  //Loop the forward stepping enough times for motion to be visible
+    {
+        stp.writeSync(1);
+        await sleep(1);
+        stp.writeSync(0);
+        await sleep(1);
+    }
+    resetEDPins();
+}
+
 async function forward() {
     EN.writeSync(0);
     dir.writeSync(0);
@@ -49,5 +64,6 @@ module.exports = {
     // stepForwardDefault: StepForwardDefault,
     resetEDPins: resetEDPins,
     forward: forward,
-    backward: backward
+    backward: backward,
+    smallForward: smallForward
 };
